@@ -2,6 +2,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import { common } from '../../common/index.js'
+import { shaking } from './tree-shaking.js'
 import logo from '../image/logo.png'
 common()
 import './search.less'
