@@ -14,19 +14,20 @@ module.exports = {
 		path: path.resolve(__dirname, '../dist') // 打包后的目录
 	},
 	/* cdn分离依赖包 */
-	/* externals: {
+	externals: {
 		react: 'React',
 		'react-dom': 'ReactDOM'
-	}, */
+	},
 	optimization: {
 		splitChunks: {
 			minSize: 10, // 当文件大小小于该值时，不会生成单独的chunk文件
 			cacheGroups: {
-				common: {
+				/* common: {
+					//本地文件分离
 					test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
 					name: 'vendors', //分离出来的文件名
 					chunks: 'all' //拆分模式
-				},
+				}, */
 				commons: {
 					//对使用的公共文件进行抽离
 					name: 'commons',
