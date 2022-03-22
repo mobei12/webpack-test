@@ -1,7 +1,7 @@
 const glob = require('glob')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
-
+const ESLintPlugin = require('eslint-webpack-plugin')
 /* 动态获取入口和模版 */
 const setMPA = () => {
 	const entry = {}
@@ -34,6 +34,13 @@ const setMPA = () => {
 		htmlWebpackPlugins
 	}
 }
+const eslintPlugin = new ESLintPlugin({
+	fix: true,
+	extensions: ['js', 'json', 'coffee'],
+	exclude: '/node_modules/',
+	overrideConfigFile: path.resolve(__dirname, '../.eslintrc.js')
+})
 module.exports = {
-	setMPA
+	setMPA,
+	eslintPlugin
 }

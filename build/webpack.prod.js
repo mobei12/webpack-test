@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
-const { setMPA } = require('./commonTools')
+const { setMPA, eslintPlugin } = require('./commonTools')
 const { entry, htmlWebpackPlugins } = setMPA()
 module.exports = {
 	mode: 'production', // 发包模式模式production: 生产模式，development: 开发模式
@@ -134,12 +134,6 @@ module.exports = {
 		/* css压缩 */
 		new CssMinimizerPlugin({
 			test: /\.css$/
-		}),
-		new ESLintPlugin({
-			fix: true,
-			extensions: ['js', 'json', 'coffee'],
-			exclude: '/node_modules/',
-			overrideConfigFile: path.resolve(__dirname, '../.eslintrc.js')
 		})
-	].concat(htmlWebpackPlugins)
+	].concat(htmlWebpackPlugins, eslintPlugin)
 }
