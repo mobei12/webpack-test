@@ -1,4 +1,4 @@
 /* for test */
-export function common() {
-	return `common module`
+export default function common() {
+	return 'common module'
 }

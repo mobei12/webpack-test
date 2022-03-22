@@ -4,6 +4,7 @@ const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const ESLintPlugin = require('eslint-webpack-plugin')
 const { setMPA } = require('./commonTools')
 const { entry, htmlWebpackPlugins } = setMPA()
 module.exports = {
@@ -54,7 +55,7 @@ module.exports = {
 			},
 			{
 				test: /.js$/,
-				use: 'babel-loader'
+				use: ['babel-loader']
 			},
 			{
 				test: /\.css$/,
@@ -133,6 +134,12 @@ module.exports = {
 		/* css压缩 */
 		new CssMinimizerPlugin({
 			test: /\.css$/
+		}),
+		new ESLintPlugin({
+			fix: true,
+			extensions: ['js', 'json', 'coffee'],
+			exclude: '/node_modules/',
+			overrideConfigFile: path.resolve(__dirname, '../.eslintrc.js')
 		})
 	].concat(htmlWebpackPlugins)
 }

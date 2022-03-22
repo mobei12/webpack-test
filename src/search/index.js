@@ -1,27 +1,30 @@
-'use strict'
 import React from 'react'
 import ReactDom from 'react-dom'
-import { common } from '../../common/index.js'
-import { shaking } from './tree-shaking.js'
+import common from '../../common/index'
+import { shaking } from './tree-shaking'
 import logo from '../image/logo.png'
+import './search.less'
+
 common()
 shaking()
-import './search.less'
+
 class Search extends React.Component {
 	constructor() {
-		super(...arguments)
+		super()
 		this.state = {
 			Text: null
 		}
 	}
+
 	/* 动态组件导入 */
 	loadComponent() {
-		import('./testImport.js').then(Text => {
+		import('./testImport').then(Text => {
 			this.setState({ Text: Text.default })
 		})
 	}
+
 	render() {
-		//debugger
+		// debugger
 		const { Text } = this.state
 		return (
 			<div>

@@ -1,2 +1,7 @@
 import React from 'react'
-export default () => <div>动态导入的组件</div>
+
+export default class TestImport extends React.Component {
+	static render() {
+		return <div>testImport</div>
+	}
+}
