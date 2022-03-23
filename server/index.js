@@ -5,20 +5,26 @@ if (typeof window === 'undefined') {
 }
 const express = require('express')
 const { renderToString } = require('react-dom/server')
-const SSR = require('../dist/search-server')
+const fs = require('fs')
+const path = require('path')
 
-const renderMarkup = str => `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>test1</title>
-</head>
-<body>
-    <div id="root">${str}</div>
-</body>
-</html>`
+const data = require('../package.json')
+
+/* 导入html页面作为模版 */
+const template = fs.readFileSync(
+	path.join(__dirname, '../dist/search.html'),
+	'utf-8'
+)
+const SSR = require('../dist/search-server')
+/* 根据字符串替换内容 */
+const renderMarkup = str =>
+	template
+		.replace('<!-- app -->', str)
+		.replace(
+			'<!-- app-data -->',
+			`<script>window.__INITIAL_DATA__ = ${JSON.stringify(data)}</script>`
+		)
+
 const server = port => {
 	const app = express()
 	app.use(express.static('dist'))

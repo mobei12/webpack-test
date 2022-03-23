@@ -25,6 +25,7 @@ module.exports = {
 			{ devDependencies: true }
 		],
 		'arrow-parens': ['error', 'as-needed'], // 箭头函数参数的括号按需
-		quotes: ['error', 'single']
+		quotes: ['error', 'single'],
+		'implicit-arrow-linebreak': ['error', 'below']
 	}
 }
