@@ -14,6 +14,11 @@ module.exports = {
 		sourceType: 'module'
 	},
 	plugins: ['react'],
+	settings: {
+		react: {
+			version: 'detect'
+		}
+	},
 	rules: {
 		semi: ['error', 'never'],
 		eqeqeq: ['error', 'smart'],

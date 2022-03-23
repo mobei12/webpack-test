@@ -1,23 +1,28 @@
 // webpack.config.js
-"use strict";
-const path = require("path");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const ESLintPlugin = require("eslint-webpack-plugin");
-const { setMPA, eslintPlugin } = require("./commonTools");
-const { entry, htmlWebpackPlugins } = setMPA();
+'use strict'
+const path = require('path')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const {
+	setMPA,
+	eslintPlugin,
+	friendlyErrorsWebpackPlugin
+} = require('./commonTools')
+
+const { entry, htmlWebpackPlugins } = setMPA()
 module.exports = {
-	mode: "production", // 发包模式模式production: 生产模式，development: 开发模式
+	mode: 'production', // 发包模式模式production: 生产模式，development: 开发模式
 	entry, // 入口文件
+	stats: 'errors-only', // 打包结果只在发生错误或有新的编译时输出
 	output: {
-		filename: "[name].[chunkhash:8].js", // 打包后的文件名称
-		path: path.resolve(__dirname, "../dist"), // 打包后的目录
+		filename: '[name].[chunkhash:8].js', // 打包后的文件名称
+		path: path.resolve(__dirname, '../dist') // 打包后的目录
 	},
 	/* cdn分离依赖包 */
 	externals: {
-		react: "React",
-		"react-dom": "ReactDOM",
+		react: 'React',
+		'react-dom': 'ReactDOM'
 	},
 	optimization: {
 		splitChunks: {
@@ -31,12 +36,12 @@ module.exports = {
 				}, */
 				commons: {
 					//对使用的公共文件进行抽离
-					name: "commons",
-					chunks: "all",
-					minChunks: 2, //最小公共次数
-				},
-			},
-		},
+					name: 'commons',
+					chunks: 'all',
+					minChunks: 2 //最小公共次数
+				}
+			}
+		}
 	},
 	module: {
 		rules: [
@@ -45,44 +50,44 @@ module.exports = {
 					//内联loader
 					{
 						resourceQuery: /raw/,
-						type: "asset/source",
+						type: 'asset/source'
 					},
 					{
 						test: /\.js\?raw$/,
-						use: ["asset/source", "babel-loader"],
-					},
-				],
+						use: ['asset/source', 'babel-loader']
+					}
+				]
 			},
 			{
 				test: /.js$/,
-				use: ["babel-loader"],
+				use: ['babel-loader']
 			},
 			{
 				test: /\.css$/,
-				use: [MiniCssExtractPlugin.loader, "css-loader"],
+				use: [MiniCssExtractPlugin.loader, 'css-loader']
 			},
 			{
 				test: /\.less$/,
 				use: [
 					MiniCssExtractPlugin.loader,
-					"css-loader",
+					'css-loader',
 					{
-						loader: "px2rem-loader",
+						loader: 'px2rem-loader',
 						options: {
 							remUnit: 75, //750设计稿等分的基数
-							remPrecision: 8, //保留8位小数
-						},
+							remPrecision: 8 //保留8位小数
+						}
 					},
-					"less-loader", //less 解析
+					'less-loader', //less 解析
 					{
-						loader: "postcss-loader", //补全css前缀
+						loader: 'postcss-loader', //补全css前缀
 						options: {
 							postcssOptions: {
-								plugins: ["postcss-preset-env"],
-							},
-						},
-					},
-				],
+								plugins: ['postcss-preset-env']
+							}
+						}
+					}
+				]
 			},
 			/* {
 				test: /\.(png|svg|jpg|gif)$/,
@@ -101,18 +106,18 @@ module.exports = {
 				test: /\.(png|svg|jpg|gif)$/,
 				use: [
 					{
-						loader: "file-loader",
+						loader: 'file-loader',
 						options: {
 							// 文件指纹
-							name: "[name].[hash:8].[ext]",
-						},
-					},
+							name: '[name].[hash:8].[ext]'
+						}
+					}
 				],
-				type: "javascript/auto",
+				type: 'javascript/auto'
 			},
 			{
 				test: /\.(woff|woff2|eot|ttf|otf)$/,
-				type: "asset/resource",
+				type: 'asset/resource'
 				/* use: [
 					{
 						loader: 'file-loader',
@@ -122,18 +127,18 @@ module.exports = {
 						}
 					}
 				] */
-			},
-		],
+			}
+		]
 	},
 	plugins: [
 		new CleanWebpackPlugin(),
 		/* css 文件合并  */
 		new MiniCssExtractPlugin({
-			filename: "[name].[contenthash:8].css",
+			filename: '[name].[contenthash:8].css'
 		}),
 		/* css压缩 */
 		new CssMinimizerPlugin({
-			test: /\.css$/,
-		}),
-	].concat(htmlWebpackPlugins, eslintPlugin),
-};
+			test: /\.css$/
+		})
+	].concat(htmlWebpackPlugins, eslintPlugin, friendlyErrorsWebpackPlugin)
+}

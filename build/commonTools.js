@@ -1,5 +1,6 @@
 const glob = require('glob')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin')
 const path = require('path')
 const ESLintPlugin = require('eslint-webpack-plugin')
 /* 动态获取入口和模版 */
@@ -46,7 +47,11 @@ const eslintPlugin = new ESLintPlugin({
 	exclude: '/node_modules/',
 	overrideConfigFile: path.resolve(__dirname, '../.eslintrc.js')
 })
+/* webpack构建日志 */
+const friendlyErrorsWebpackPlugin = new FriendlyErrorsWebpackPlugin()
+
 module.exports = {
 	setMPA,
-	eslintPlugin
+	eslintPlugin,
+	friendlyErrorsWebpackPlugin
 }

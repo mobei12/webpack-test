@@ -5,7 +5,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const webpack = require('webpack')
-const { setMPA, eslintPlugin } = require('./commonTools')
+const {
+	setMPA,
+	eslintPlugin,
+	friendlyErrorsWebpackPlugin
+} = require('./commonTools')
 const { entry, htmlWebpackPlugins } = setMPA()
 module.exports = {
 	mode: 'development', // 开发模式
@@ -13,6 +17,7 @@ module.exports = {
 		app: path.resolve(__dirname, './src/index/index.js'),
 		search: path.resolve(__dirname, './src/search/search.js')
 	}, // 入口文件 */
+	stats: 'errors-only', // 打包结果只在发生错误或有新的编译时输出
 	entry,
 	// 省略其他配置
 	output: {
@@ -65,7 +70,7 @@ module.exports = {
 		}),
 		new CleanWebpackPlugin(),
 		new webpack.HotModuleReplacementPlugin()
-	].concat(eslintPlugin),
+	].concat(eslintPlugin, friendlyErrorsWebpackPlugin),
 	devServer: {
 		//服务器访问的基本目录
 		static: path.resolve(__dirname, 'dist'),
