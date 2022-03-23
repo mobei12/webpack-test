@@ -50,8 +50,17 @@ const eslintPlugin = new ESLintPlugin({
 /* webpack构建日志 */
 const friendlyErrorsWebpackPlugin = new FriendlyErrorsWebpackPlugin()
 
+/* 捕获构建错误 */
+class BuildCompiler {
+	apply(compiler) {
+		compiler.hooks.compilation.tap('done', stats => {
+			console.log(stats)
+		})
+	}
+}
 module.exports = {
 	setMPA,
 	eslintPlugin,
-	friendlyErrorsWebpackPlugin
+	friendlyErrorsWebpackPlugin,
+	BuildCompiler
 }

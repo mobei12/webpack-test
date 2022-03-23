@@ -7,7 +7,8 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const {
 	setMPA,
 	eslintPlugin,
-	friendlyErrorsWebpackPlugin
+	friendlyErrorsWebpackPlugin,
+	BuildCompiler
 } = require('./commonTools')
 
 const { entry, htmlWebpackPlugins } = setMPA()
@@ -140,5 +141,10 @@ module.exports = {
 		new CssMinimizerPlugin({
 			test: /\.css$/
 		})
-	].concat(htmlWebpackPlugins, eslintPlugin, friendlyErrorsWebpackPlugin)
+	].concat(
+		htmlWebpackPlugins,
+		eslintPlugin,
+		friendlyErrorsWebpackPlugin,
+		new BuildCompiler()
+	)
 }
