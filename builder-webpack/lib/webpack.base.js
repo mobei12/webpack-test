@@ -52,8 +52,8 @@ const setMPA = (name = 'index') => {
 }
 const { entry, htmlWebpackPlugins } = setMPA
 module.exports = {
+	entry,
 	module: {
-		entry,
 		rules: [
 			{
 				test: /.js$/,
@@ -61,7 +61,7 @@ module.exports = {
 			},
 			{
 				test: /\.css$/,
-				use: ['style-loader', 'css-loader']
+				use: [MiniCssExtractPlugin.loader, 'css-loader']
 			},
 			{
 				test: /\.less$/,
@@ -86,29 +86,13 @@ module.exports = {
 					}
 				]
 			},
-			/* {
-				test: /\.(png|svg|jpg|gif)$/,
-				use: [
-					{
-						loader: 'url-loader',
-						options: {
-							// 压缩法
-							limit: 10240
-						}
-					}
-				]
-			}, */
 			{
 				test: /\.(png|svg|jpg|gif)$/,
-				use: [
-					{
-						loader: 'file-loader'
-					}
-				]
+				type: 'asset/resource'
 			},
 			{
 				test: /\.(woff|woff2|eot|ttf|otf)$/,
-				use: ['file-loader']
+				type: 'asset/resource'
 			}
 		]
 	},
