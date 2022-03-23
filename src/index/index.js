@@ -1,1 +1,1 @@
-document.write('123')
+document.querySelector('#root').innerHTML = '123'

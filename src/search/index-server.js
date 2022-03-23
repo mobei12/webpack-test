@@ -1,12 +1,6 @@
-import React from 'react'
-import ReactDom from 'react-dom'
-import common from '../../common/index'
-import { shaking } from './tree-shaking'
-import logo from '../image/logo.png'
-import './search.less'
-
-common()
-shaking()
+const React = require('react')
+const logo = require('../image/logo.png')
+require('./search.less')
 
 class Search extends React.Component {
 	constructor() {
@@ -40,4 +34,4 @@ class Search extends React.Component {
 		)
 	}
 }
-ReactDom.render(<Search />, document.getElementById('root'))
+module.exports = <Search />
