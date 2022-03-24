@@ -1,5 +1,5 @@
 module.exports = {}
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const baseConfig = require('./webpack.base')
 

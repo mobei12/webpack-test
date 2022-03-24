@@ -13,21 +13,27 @@ const path = require('path')
 	}
 } */
 /* 动态获取入口和模版 */
+const projectRoot = process.cwd()
 const setMPA = (name = 'index') => {
 	const entry = {}
 	const htmlWebpackPlugins = []
-	const entryFiles = glob.sync(path.join(__dirname, `../src/*/${name}.js`))
+	const entryFiles = glob.sync(path.join(projectRoot, `/src/*/${name}.js`))
 	Object.keys(entryFiles).map(index => {
 		const entryFile = entryFiles[index]
 		const regexp = new RegExp(`src/(.*)/${name}.js`)
 		const match = entryFile.match(regexp)
 		const pageName = match && match[1]
+
 		entry[pageName] = entryFile
 		return htmlWebpackPlugins.push(
 			new HtmlWebpackPlugin({
-				template: path.join(__dirname, `../src/${pageName}/index.html`),
+				inlineSource: '.css$',
+				template: path.join(
+					projectRoot,
+					`./src/${pageName}/index.html`
+				),
 				filename: `${pageName}.html`,
-				chunks: [pageName],
+				chunks: ['vendors', pageName],
 				inject: true,
 				minify: {
 					html5: true,
@@ -40,14 +46,19 @@ const setMPA = (name = 'index') => {
 			})
 		)
 	})
+
 	return {
 		entry,
 		htmlWebpackPlugins
 	}
 }
-const { entry, htmlWebpackPlugins } = setMPA
+const { entry, htmlWebpackPlugins } = setMPA()
 module.exports = {
 	entry,
+	output: {
+		filename: '[name].[chunkhash:8].js', // 打包后的文件名称
+		path: path.resolve(projectRoot, './dist') // 打包后的目录
+	},
 	module: {
 		rules: [
 			{
@@ -105,8 +116,9 @@ module.exports = {
 					stats.compilation.errors.length &&
 					process.argv.indexOf('--watch') === -1
 				) {
+					console.log(stats.compilation.errors)
 					console.log('build error') //eslint-disable-line
-					process.exit(1)
+					process.exit(2)
 				}
 			})
 		}
