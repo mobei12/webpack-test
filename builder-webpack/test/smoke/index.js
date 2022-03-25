@@ -1,3 +1,8 @@
+if (typeof window === 'undefined') {
+	// 服务器端hack处理
+	global.window = {}
+	global.self = {}
+}
 const path = require('path')
 const webpack = require('webpack')
 const rimraf = require('rimraf')

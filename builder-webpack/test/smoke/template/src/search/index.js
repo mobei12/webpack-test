@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
+
 import common from '../../common/index'
 import { shaking } from './tree-shaking'
 import logo from '../image/logo.png'

@@ -4,14 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin')
 const path = require('path')
-/* 捕获构建错误 */
-/* class BuildCompiler {
-	apply(compiler) {
-		compiler.hooks.compilation.tap('done', stats => {
-			console.log(stats)
-		})
-	}
-} */
+
 /* 动态获取入口和模版 */
 const projectRoot = process.cwd()
 const setMPA = (name = 'index') => {
@@ -62,6 +55,19 @@ module.exports = {
 	module: {
 		rules: [
 			{
+				oneOf: [
+					// 内联loader,和自适应,引入mate有关
+					{
+						resourceQuery: /raw/,
+						type: 'asset/source'
+					},
+					{
+						test: /\.js\?raw$/,
+						use: ['asset/source', 'babel-loader']
+					}
+				]
+			},
+			{
 				test: /.js$/,
 				use: 'babel-loader'
 			},
@@ -77,7 +83,7 @@ module.exports = {
 					{
 						loader: 'px2rem-loader',
 						options: {
-							remUnit: 75, // 750设计稿等分的基数
+							remUnit: 1080, // 设计稿等分的基数
 							remPrecision: 8 // 保留8位小数
 						}
 					},
@@ -110,14 +116,14 @@ module.exports = {
 		new CleanWebpackPlugin(),
 		new FriendlyErrorsWebpackPlugin(),
 		function errorPlugin() {
+			// 打包错误提示
 			this.hooks.done.tap('done', stats => {
 				if (
 					stats.compilation.errors &&
 					stats.compilation.errors.length &&
 					process.argv.indexOf('--watch') === -1
 				) {
-					console.log(stats.compilation.errors)
-					console.log('build error') //eslint-disable-line
+					console.log(stats.compilation.errors) //eslint-disable-line
 					process.exit(2)
 				}
 			})
