@@ -24,6 +24,7 @@ module.exports = {
 		'operator-linebreak': ['error', 'after'],
 		'arrow-parens': ['error', 'as-needed'], // 箭头函数参数的括号按需
 		quotes: ['error', 'single'],
-		'implicit-arrow-linebreak': ['error', 'below']
+		'implicit-arrow-linebreak': ['error', 'below'],
+		'global-require': 'error'
 	}
 }

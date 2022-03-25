@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "istanbul cover node_modules/mocha/bin/mocha",
 		"eslint": "eslint ./lib --fix"
 	},
 	"keywords": [],
@@ -13,10 +13,14 @@
 	"devDependencies": {
 		"@babel/eslint-parser": "^7.17.0",
 		"@babel/preset-env": "^7.16.11",
+		"assert": "^2.0.0",
 		"eslint": "^8.11.0",
 		"eslint-config-airbnb-base": "^15.0.0",
 		"eslint-plugin-import": "^2.25.4",
 		"eslint-webpack-plugin": "^3.1.1",
+		"glob-all": "^3.3.0",
+		"istanbul": "^0.4.5",
+		"mocha": "^9.2.2",
 		"rimraf": "^3.0.2"
 	},
 	"dependencies": {
