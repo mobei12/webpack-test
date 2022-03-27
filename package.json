@@ -4,9 +4,10 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"build": "webpack --config ./build/webpack.prod.js",
+		"build": "webpack --config  ./build/webpack.prod.js",
 		"watch": "webpack --watch --mode development ",
 		"dev": "webpack-dev-server  --config ./build/webpack.dev.js",
+		"build:stats": "webpack --config ./build/webpack.prod.js --json > stats.json",
 		"build:ssr": "webpack --config ./build/webpack.ssr.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
@@ -19,6 +20,7 @@
 		"@babel/preset-react": "^7.16.7",
 		"@soda/friendly-errors-webpack-plugin": "^1.8.1",
 		"babel-loader": "^8.0.6",
+		"babel-polyfill": "^6.26.0",
 		"clean-webpack-plugin": "^4.0.0",
 		"css-loader": "^6.7.1",
 		"css-minimizer-webpack-plugin": "^3.4.1",
@@ -43,6 +45,7 @@
 		"style-loader": "^3.3.1",
 		"url-loader": "^4.1.1",
 		"webpack": "^5.70.0",
+		"webpack-bundle-analyzer": "^4.5.0",
 		"webpack-cli": "^4.9.1",
 		"webpack-dev-server": "^4.7.4"
 	},

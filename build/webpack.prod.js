@@ -1,9 +1,16 @@
 // webpack.config.js
 'use strict'
 const path = require('path')
+//清除dist文件夹
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+// 将CSS提取出来，而不是和js混在一起
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+//压缩css
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+// 打包体积分析
+const BundleAnalyzerPlugin =
+	require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
 const {
 	setMPA,
 	eslintPlugin,
@@ -23,7 +30,8 @@ module.exports = {
 	/* cdn分离依赖包 */
 	externals: {
 		react: 'React',
-		'react-dom': 'ReactDOM'
+		'react-dom': 'ReactDOM',
+		'babel-polyfill': 'babel-polyfill'
 	},
 	optimization: {
 		splitChunks: {
@@ -105,29 +113,19 @@ module.exports = {
 			}, */
 			{
 				test: /\.(png|svg|jpg|gif)$/,
-				use: [
-					{
-						loader: 'file-loader',
-						options: {
-							// 文件指纹
-							name: '[name].[hash:8].[ext]'
-						}
-					}
-				],
-				type: 'javascript/auto'
+				type: 'asset/resource',
+				generator: {
+					filename: 'static/image/[name].[hash:6][ext]'
+				}
 			},
 			{
 				test: /\.(woff|woff2|eot|ttf|otf)$/,
-				type: 'asset/resource'
-				/* use: [
-					{
-						loader: 'file-loader',
-						options: {
-							// 文件指纹
-							name: '[name].[hash:8].[ext]'
-						}
-					}
-				] */
+				type: 'asset/resource',
+				generator: {
+					// 输出到 font 目录中，占位符 [name] 保留原始文件名，
+					// [hash] 防止出现相同文件名无法区分，[ext] 拿到后缀名
+					filename: 'static/font/[name].[hash:6][ext]'
+				}
 			}
 		]
 	},
@@ -140,7 +138,9 @@ module.exports = {
 		/* css压缩 */
 		new CssMinimizerPlugin({
 			test: /\.css$/
-		})
+		}),
+		new BundleAnalyzerPlugin()
+		//new webpack.debug.ProfilingPlugin()
 	].concat(
 		htmlWebpackPlugins,
 		eslintPlugin,
