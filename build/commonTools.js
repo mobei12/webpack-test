@@ -54,7 +54,7 @@ const friendlyErrorsWebpackPlugin = new FriendlyErrorsWebpackPlugin()
 class BuildCompiler {
 	apply(compiler) {
 		compiler.hooks.compilation.tap('done', stats => {
-			console.log(stats)
+			//console.log(stats)
 		})
 	}
 }

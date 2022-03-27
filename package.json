@@ -9,6 +9,7 @@
 		"dev": "webpack-dev-server  --config ./build/webpack.dev.js",
 		"build:stats": "webpack --config ./build/webpack.prod.js --json > stats.json",
 		"build:ssr": "webpack --config ./build/webpack.ssr.js",
+		"dll": "webpack --config ./build/webpack.dll.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "",
@@ -43,6 +44,8 @@
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"style-loader": "^3.3.1",
+		"terser-webpack-plugin": "^5.3.1",
+		"thread-loader": "^3.0.4",
 		"url-loader": "^4.1.1",
 		"webpack": "^5.70.0",
 		"webpack-bundle-analyzer": "^4.5.0",

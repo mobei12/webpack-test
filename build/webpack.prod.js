@@ -10,7 +10,9 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 // 打包体积分析
 const BundleAnalyzerPlugin =
 	require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-
+const webpack = require('webpack')
+//使用 terser 来压缩 JavaScript。
+const TerserPlugin = require('terser-webpack-plugin')
 const {
 	setMPA,
 	eslintPlugin,
@@ -22,18 +24,25 @@ const { entry, htmlWebpackPlugins } = setMPA()
 module.exports = {
 	mode: 'production', // 发包模式模式production: 生产模式，development: 开发模式
 	entry, // 入口文件
-	stats: 'errors-only', // 打包结果只在发生错误或有新的编译时输出
+	//stats: 'errors-only', // 打包结果只在发生错误或有新的编译时输出
 	output: {
 		filename: '[name].[chunkhash:8].js', // 打包后的文件名称
 		path: path.resolve(__dirname, '../dist') // 打包后的目录
 	},
 	/* cdn分离依赖包 */
-	externals: {
+	/* externals: {
 		react: 'React',
 		'react-dom': 'ReactDOM',
 		'babel-polyfill': 'babel-polyfill'
-	},
+	}, */
 	optimization: {
+		minimize: true,
+		minimizer: [
+			new TerserPlugin({
+				parallel: true,
+				exclude: /\.min\.js$/
+			})
+		],
 		splitChunks: {
 			minSize: 10, // 当文件大小小于该值时，不会生成单独的chunk文件
 			cacheGroups: {
@@ -68,8 +77,16 @@ module.exports = {
 				]
 			},
 			{
-				test: /.js$/,
-				use: ['babel-loader']
+				test: /\.js$/,
+				use: [
+					{
+						loader: 'thread-loader',
+						options: {
+							workers: 3
+						}
+					},
+					'babel-loader'
+				]
 			},
 			{
 				test: /\.css$/,
@@ -138,13 +155,18 @@ module.exports = {
 		/* css压缩 */
 		new CssMinimizerPlugin({
 			test: /\.css$/
-		}),
-		new BundleAnalyzerPlugin()
+		})
+		//new BundleAnalyzerPlugin()
 		//new webpack.debug.ProfilingPlugin()
 	].concat(
 		htmlWebpackPlugins,
 		eslintPlugin,
 		friendlyErrorsWebpackPlugin,
-		new BuildCompiler()
+		new BuildCompiler(),
+		new webpack.DllReferencePlugin({
+			context: __dirname,
+			// manifest 就是之前打包出来的 json 文件
+			manifest: require('../dllBuild/library/library.json')
+		})
 	)
 }
