@@ -117,8 +117,34 @@
         }
         ```
 -   图片优化
+
     -   Image-webpack-loader
         -   多种定制选项
         -   可以使用第三方优化插件,例如 pngquant(使用高效的 8 位色彩压缩,减小文件)
         -   可以处理多种图片格式
     -   [ImageMinimizerWebpackPlugin](https://webpack.docschina.org/plugins/image-minimizer-webpack-plugin/)(webpack5)
+
+-   tree shaking
+
+    -   去除无用的 css
+    -   PurgecssPlugin:识别已经被引用的 css,并且把没有被引用的 css 删除
+    -   uncss:HTML 需要通过 jsdom 加载,所有的样式通过 PostCSS 解析,通过 document.querySelector 识别需要去除的选择器
+
+    ```javascript
+    const glob = require('glob')
+    const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+    const PurgeCSSPlugin = require('purgecss-webpack-plugin')
+    const PATHS = { src: path.join(__dirname, 'src') }
+    module.exports = {
+    	plugins: [
+    		// 打包体积分析
+    		new BundleAnalyzerPlugin(),
+    		// 提取 CSS
+    		new MiniCssExtractPlugin({ filename: '[name].css' }),
+    		// CSS Tree Shaking
+    		new PurgeCSSPlugin({
+    			paths: glob.sync(`${paths.appSrc}/\*_/_`, { nodir: true })
+    		})
+    	]
+    }
+    ```

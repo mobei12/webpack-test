@@ -1,10 +1,16 @@
 // webpack.config.js
 'use strict'
 const path = require('path')
+const glob = require('glob')
+const PATHS = {
+	src: path.join(__dirname, 'src')
+}
 //清除dist文件夹
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 // 将CSS提取出来，而不是和js混在一起
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+//去除未使用的css
+const PurgeCSSPlugin = require('purgecss-webpack-plugin')
 //压缩css
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 // 打包体积分析
@@ -155,6 +161,10 @@ module.exports = {
 		/* css压缩 */
 		new CssMinimizerPlugin({
 			test: /\.css$/
+		}),
+		// CSS Tree Shaking
+		new PurgeCSSPlugin({
+			paths: glob.sync(`${PATHS.src}/**/*`, { nodir: true })
 		})
 		//new BundleAnalyzerPlugin()
 		//new webpack.debug.ProfilingPlugin()
