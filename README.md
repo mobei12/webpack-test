@@ -116,3 +116,9 @@
         	}
         }
         ```
+-   图片优化
+    -   Image-webpack-loader
+        -   多种定制选项
+        -   可以使用第三方优化插件,例如 pngquant(使用高效的 8 位色彩压缩,减小文件)
+        -   可以处理多种图片格式
+    -   [ImageMinimizerWebpackPlugin](https://webpack.docschina.org/plugins/image-minimizer-webpack-plugin/)(webpack5)
