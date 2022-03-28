@@ -84,3 +84,35 @@
             	]
             }
             ```
+
+-   缓存,提高二次打包速度
+    -   babel-loader 开启缓存
+    -   terser-webpack-plugin 开启缓存
+    -   使用 cache-loader 或者 hard-source-webpack-plugin
+-   限制构建目标,提升打包速度
+    -   exclude: 忽略某些文件
+-   减少文件搜索范围
+    -   resolve.modules 限制打包的模块
+    -   resolve.extensions 限制打包的文件
+    -   resolve.mainFields 限制打包的文件
+    -   合理使用 alias
+        ```javascript
+        module.exports = {
+        	resolve: {
+        		alias: {
+        			'@': path.resolve(__dirname, 'src'),
+        			'@components': path.resolve(__dirname, 'src/components'),
+        			vue: path.resolve(
+        				__dirname,
+        				'node_modules/vue/dist/vue.esm.js'
+        			),
+        			react: path.resolve(
+        				__dirname,
+        				'node_modules/react/umd/react.production.min.js'
+        			)
+        		},
+        		extensions: ['.js', '.jsx', '.json', '.less', '.css'],
+        		mainFields: ['main']
+        	}
+        }
+        ```

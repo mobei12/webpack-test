@@ -24,7 +24,7 @@ const { entry, htmlWebpackPlugins } = setMPA()
 module.exports = {
 	mode: 'production', // 发包模式模式production: 生产模式，development: 开发模式
 	entry, // 入口文件
-	//stats: 'errors-only', // 打包结果只在发生错误或有新的编译时输出
+	stats: 'errors-only', // 打包结果只在发生错误或有新的编译时输出
 	output: {
 		filename: '[name].[chunkhash:8].js', // 打包后的文件名称
 		path: path.resolve(__dirname, '../dist') // 打包后的目录
